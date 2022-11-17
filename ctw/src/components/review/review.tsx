@@ -19,13 +19,13 @@ export const Review = () => {
             </div>
             <div className = "block">
                 <div className = "left">
-                <p><b>No. of. People</b></p>
+                <p><b>No. of. People:</b></p>
                 </div>
                 <p>{peoplenumber}</p>
             </div>
             <div className = "block">
                 <div className = "left">
-                <p><b>Restaurant</b></p>
+                <p><b>Restaurant:</b></p>
                 </div>
                 <p>{restaurant}</p>
             </div>

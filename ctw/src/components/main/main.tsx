@@ -8,13 +8,58 @@ import { Step1 } from "../step1/step1";
 import { Step2 } from "../step2/step2";
 import { Step3 } from "../step3/step3";
 import {Review} from "../review/review";
+import { restaurant_name, meal_type, people_number } from "../../store";
+import { useRecoilValue } from "recoil";
+import { finished } from "stream";
 
 
 const Main = () => { 
-    const [selected, setselected] = useState(1);
+
+    const restaurant = useRecoilValue(restaurant_name);
+    const mealtype = useRecoilValue(meal_type);
+    const peoplenumber = useRecoilValue(people_number);
+
+    const [step, setstep] = useState(1);
+    const [moststep, setmoststep] = useState(1);
+    const [error, seterror] = useState("");
 
     const changestep = (num:number) =>{
-        setselected(num);
+        setstep(num);
+    }
+
+    const finished = (curstep:number) =>{
+        if(curstep==1){
+            if(mealtype!=""){
+                return true;
+            }
+            else{
+                seterror("Please select your meal first!");
+            }
+        }
+        else if(curstep==2){
+            if(restaurant!=""){
+                return true;
+            }
+            else{
+                seterror("Please select your restaurant frist!");
+            }
+        }
+        return false;
+    }
+
+    const gonext = () =>{
+        if(finished(step)){
+            seterror("");
+            setstep(step+1);
+            if(moststep<step+1){
+                setmoststep(step+1);
+            }
+        }
+    }
+
+    const goprevious = () =>{
+       seterror("");
+       setstep(step-1);
     }
 
     return(
@@ -24,7 +69,7 @@ const Main = () => {
                     className = "tablinks" 
                     id = "s1"
                     onClick={() => changestep(1)}
-                    style={ selected == 1? {
+                    style={ step == 1? {
                         backgroundColor: "grey",
                         color: "white"
                     }: {
@@ -37,12 +82,13 @@ const Main = () => {
                     className = "tablinks" 
                     id = "s2"
                     onClick={() => changestep(2)}
-                    style={ selected == 2? {
+                    style={ step == 2? {
                         backgroundColor: "grey",
                         color: "white"
                     }: {
                         backgroundColor: "white"
                     }}
+                   disabled = {moststep<2}
                 >
                     Step2
                 </Button>
@@ -50,12 +96,13 @@ const Main = () => {
                     className = "tablinks" 
                     id = "s3"
                     onClick={() => changestep(3)}
-                    style={ selected == 3? {
+                    style={ step == 3? {
                         backgroundColor: "grey",
                         color: "white"
                     }: {
                         backgroundColor: "white"
                     }}
+                    disabled = {moststep<3}
                 >
                     Step3
                 </Button>
@@ -63,53 +110,68 @@ const Main = () => {
                     className = "tablinks" 
                     id = "s4"
                     onClick={() => changestep(4)}
-                    style={ selected == 4? {
+                    style={ step == 4? {
                         backgroundColor: "grey",
                         color: "white"
                     }: {
                         backgroundColor: "white"
                     }}
+                    disabled = {moststep<4}
                 >
                     Review
                 </Button>
             </div>
             <div className = "content">
                 {
-                  selected == 1 && 
+                  step == 1 && 
                   <Step1/>
                 }
                 {
-                  selected == 2 &&
+                  step == 2 &&
                   <Step2/>
                 }
                 {
-                  selected == 3 &&
+                  step == 3 &&
                   <Step3/>
                 }
                 {
-                  selected == 4 &&
+                  step == 4 &&
                   <Review/>
                 }
+            </div>
+            <div className = "errormes">
+                    <p className = "alert">{error}</p>
             </div>
             <div className = "downbar">
                 <div>
                 {
-                    selected>1 &&
-                    <Button style = {{width: '100px', height: '40px', background: "#4B98E5"}} variant="contained">
+                    step>1 &&
+                    <Button 
+                       style = {{width: '100px', height: '40px', background: "#4B98E5"}} 
+                       variant="contained" 
+                       onClick = {()=>goprevious()}
+                    >
                        Previous
                     </Button>
                 }
                 </div>
                 <div className = "rightdownbar">
                 {
-                    selected<4&&
-                    <Button style = {{width: '100px', height: '40px', background: "#4B98E5"}} variant="contained">
+                    step<4&&
+                    <Button 
+                       style = {{width: '100px', height: '40px', background: "#4B98E5"}} 
+                       variant="contained"
+                       onClick = {()=>gonext()}
+                    >
                        Next
                     </Button>
                 }
                 {
-                    selected == 4&&
-                    <Button style = {{width: '100px', height: '40px', background: "#4B98E5"}} variant="contained">
+                    step == 4&&
+                    <Button 
+                       style = {{width: '100px', height: '40px', background: "#4B98E5"}} 
+                       variant="contained"
+                    >
                        Submit
                     </Button>
                 }

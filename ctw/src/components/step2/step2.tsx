@@ -25,9 +25,6 @@ export const Step2 = () => {
              value={restaurant}
              onChange={changerestaurant}
              >
-            <MenuItem value="">
-             <em>---</em>
-            </MenuItem>
             <MenuItem value={"Mc Donalds"}>Mc Donalds</MenuItem>
             <MenuItem value={"Taco Bell"}>Taco Bell</MenuItem>
             <MenuItem value={"BBQ Hut"}>BBQ Hut</MenuItem>
