@@ -5,6 +5,9 @@ import { setTokenSourceMapRange } from "typescript";
 import {useState, useRef} from "react";
 import { StylesContext } from "@material-ui/styles";
 import { Step1 } from "../step1/step1";
+import { Step2 } from "../step2/step2";
+import { Step3 } from "../step3/step3";
+import {Review} from "../review/review";
 
 
 const Main = () => { 
@@ -71,8 +74,21 @@ const Main = () => {
                 </Button>
             </div>
             <div className = "content">
-                {selected == 1 && 
-                   <Step1/>
+                {
+                  selected == 1 && 
+                  <Step1/>
+                }
+                {
+                  selected == 2 &&
+                  <Step2/>
+                }
+                {
+                  selected == 3 &&
+                  <Step3/>
+                }
+                {
+                  selected == 4 &&
+                  <Review/>
                 }
             </div>
             <div className = "downbar">

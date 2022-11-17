@@ -9,8 +9,8 @@
 
 .content{
   margin-top: 20px;
-  width: 40vw;
-  height: 40vh;
+  width: 35vw;
+  height: 60vh;
   display:flex;
   flex-direction: column;
   justify-content: center;

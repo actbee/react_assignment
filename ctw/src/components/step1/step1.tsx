@@ -1,14 +1,16 @@
 import "./step1.css";
 import React from "react";
-import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import {useState, useRef} from "react";
+import {meal_type, people_number} from "../../store"
+import { useRecoilState } from "recoil";
+
 
 export const Step1 = () => {
-    const [mealtype, setmealtype] = useState('');
-    const [peoplenumber, setpeoplenumber] = useState(1);
+    const [mealtype, setmealtype] = useRecoilState(meal_type);
+    const [peoplenumber, setpeoplenumber] = useRecoilState(people_number);
 
     const changemealtype = (event: SelectChangeEvent) => {
       setmealtype(event.target.value);
@@ -34,9 +36,9 @@ export const Step1 = () => {
             <MenuItem value="">
              <em>---</em>
             </MenuItem>
-            <MenuItem value={"breakfast"}>Breakfast</MenuItem>
-            <MenuItem value={"lunch"}>Lunch</MenuItem>
-            <MenuItem value={"dinner"}>Dinner</MenuItem>
+            <MenuItem value={"Breakfast"}>Breakfast</MenuItem>
+            <MenuItem value={"Lunch"}>Lunch</MenuItem>
+            <MenuItem value={"Dinner"}>Dinner</MenuItem>
             </Select>
            </FormControl>
 
