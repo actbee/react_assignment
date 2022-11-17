@@ -1,18 +1,24 @@
 import "./step2.css";
 import React from "react";
-import { useRecoilState } from "recoil";
+import { useRecoilValue, useRecoilState } from "recoil";
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
-import { restaurant_name } from "../../store";
+import { restaurant_name, restaurant_list } from "../../store";
 
 export const Step2 = () => {
 
     const [restaurant, setrestaurant] = useRecoilState(restaurant_name);
+    const reslist = useRecoilValue(restaurant_list);
 
     const changerestaurant = (event: SelectChangeEvent) => {
         setrestaurant(event.target.value);
     }
+
+    const menuItems = reslist.map(item => (
+        <MenuItem value={item}>{item}</MenuItem>
+    ))
+
 
     return(
         <div>
@@ -25,13 +31,7 @@ export const Step2 = () => {
              value={restaurant}
              onChange={changerestaurant}
              >
-            <MenuItem value={"Mc Donalds"}>Mc Donalds</MenuItem>
-            <MenuItem value={"Taco Bell"}>Taco Bell</MenuItem>
-            <MenuItem value={"BBQ Hut"}>BBQ Hut</MenuItem>
-            <MenuItem value={"Vege Deli"}>Vege Deli</MenuItem>
-            <MenuItem value={"Pizzeria"}>Pizzeria</MenuItem>
-            <MenuItem value={"Panda Express"}>Panda Express</MenuItem>
-            <MenuItem value={"Olive Garden"}>Olive Garden</MenuItem>
+            {menuItems}
             </Select>
            </FormControl>
         </div>

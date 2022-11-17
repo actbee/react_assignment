@@ -1,5 +1,5 @@
 import "./main.css";
-import React from "react";
+import React,{useEffect} from "react";
 import Button from '@mui/material/Button';
 import { setTokenSourceMapRange } from "typescript";
 import {useState, useRef} from "react";
@@ -8,9 +8,10 @@ import { Step1 } from "../step1/step1";
 import { Step2 } from "../step2/step2";
 import { Step3 } from "../step3/step3";
 import {Review} from "../step4/review";
-import { restaurant_name, meal_type, people_number } from "../../store";
-import { useRecoilValue } from "recoil";
+import { restaurant_name, restaurant_list, meal_type, people_number } from "../../store";
+import { useRecoilValue, useRecoilState } from "recoil";
 import { finished } from "stream";
+import disheslist from "../../data/dishes.json";
 
 
 const Main = () => { 
@@ -18,6 +19,7 @@ const Main = () => {
     const restaurant = useRecoilValue(restaurant_name);
     const mealtype = useRecoilValue(meal_type);
     const peoplenumber = useRecoilValue(people_number);
+    const [reslist, setreslist] = useRecoilState(restaurant_list);
 
     const [step, setstep] = useState(1);
     const [moststep, setmoststep] = useState(1);
@@ -64,6 +66,19 @@ const Main = () => {
        seterror("");
        setstep(step-1);
     }
+
+    useEffect(()=>{
+        const temset = new Set<string>();
+         disheslist.dishes.map((value,index)=>{
+            temset.add(value.restaurant);
+        });
+        const temarr : string[] = [];
+        for(const item of temset){
+            temarr.push(item);
+        }
+         setreslist(temarr);
+         console.log(temarr);
+    },[]);
 
     return(
         <div className = "main">
