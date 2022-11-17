@@ -32,7 +32,8 @@ export const Step1 = () => {
              id="select-mealtype"
              value={mealtype}
              onChange={changemealtype}
-             > 
+             >
+           
             <MenuItem value={"Breakfast"}>Breakfast</MenuItem>
             <MenuItem value={"Lunch"}>Lunch</MenuItem>
             <MenuItem value={"Dinner"}>Dinner</MenuItem>

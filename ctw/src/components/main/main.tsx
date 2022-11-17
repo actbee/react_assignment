@@ -7,7 +7,7 @@ import { StylesContext } from "@material-ui/styles";
 import { Step1 } from "../step1/step1";
 import { Step2 } from "../step2/step2";
 import { Step3 } from "../step3/step3";
-import {Review} from "../review/review";
+import {Review} from "../step4/review";
 import { restaurant_name, meal_type, people_number } from "../../store";
 import { useRecoilValue } from "recoil";
 import { finished } from "stream";
@@ -43,6 +43,9 @@ const Main = () => {
             else{
                 seterror("Please select your restaurant frist!");
             }
+        }
+        else if(curstep==3){
+            return true;
         }
         return false;
     }
