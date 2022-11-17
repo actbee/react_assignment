@@ -8,7 +8,7 @@ import { Step1 } from "../step1/step1";
 import { Step2 } from "../step2/step2";
 import { Step3 } from "../step3/step3";
 import {Review} from "../step4/review";
-import { restaurant_name, restaurant_list, meal_type, people_number } from "../../store";
+import { errormsg, restaurant_name, restaurant_list, meal_type, people_number } from "../../store";
 import { useRecoilValue, useRecoilState } from "recoil";
 import { finished } from "stream";
 import disheslist from "../../data/dishes.json";
@@ -20,10 +20,11 @@ const Main = () => {
     const mealtype = useRecoilValue(meal_type);
     const peoplenumber = useRecoilValue(people_number);
     const [reslist, setreslist] = useRecoilState(restaurant_list);
+    const [error, seterror] = useRecoilState(errormsg);
 
     const [step, setstep] = useState(1);
     const [moststep, setmoststep] = useState(1);
-    const [error, seterror] = useState("");
+
 
     const changestep = (num:number) =>{
         setstep(num);
@@ -77,7 +78,6 @@ const Main = () => {
             temarr.push(item);
         }
          setreslist(temarr);
-         console.log(temarr);
     },[]);
 
     return(
@@ -198,6 +198,5 @@ const Main = () => {
         </div>
     );
 }
-
 
 export default Main;

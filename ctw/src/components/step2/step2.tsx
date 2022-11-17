@@ -19,7 +19,6 @@ export const Step2 = () => {
         <MenuItem value={item}>{item}</MenuItem>
     ))
 
-
     return(
         <div>
             <p>Please Select a Restaurant</p>

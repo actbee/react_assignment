@@ -1,17 +1,24 @@
 import {atom, selector} from "recoil";
 import {order} from "../type/order";
 
-export const meal_type = atom({
+
+export const errormsg = atom<string>({
+    key: "errormessage",
+    default: "",
+})
+
+
+export const meal_type = atom<string>({
     key: "mealtype",
     default: "",
 })
 
-export const people_number = atom({
+export const people_number = atom<number>({
     key: "peoplenumber",
     default: 1,
 })
 
-export const restaurant_name = atom({
+export const restaurant_name = atom<string>({
     key: "restaurantname",
     default: "",
 })

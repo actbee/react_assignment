@@ -1,21 +1,28 @@
 import "./step3.css";
-import React from "react";
-import { useRecoilState } from "recoil";
+import React, {useEffect} from "react";
+import { useRecoilValue, useRecoilState } from "recoil";
 import {useState, useRef} from "react";
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
-import { restaurant_name } from "../../store";
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import IconButton from '@mui/material/IconButton';
-import {orders, sumorders} from "../../store"
+import {errormsg, meal_type, people_number, restaurant_name, orders, sumorders} from "../../store";
+import {order} from "../../type/order";
+import disheslist from "../../data/dishes.json";
 
 
 export const Step3 = () => {
 
+    const mealtype = useRecoilValue(meal_type);
+    const peoplenum = useRecoilValue(people_number);
+    const resname = useRecoilValue(restaurant_name);
+
     const [dish, setdish] = useState("");
     const [val, setval] = useState(0);
     const [orderlist, setorderlist] = useRecoilState(orders);
+    const [error, seterror] = useRecoilState(errormsg);
+    const [foodoptions, setfoodoptions] = useState([""]);
 
     const changedish = (event: SelectChangeEvent) => {
           setdish(event.target.value);
@@ -26,10 +33,44 @@ export const Step3 = () => {
       }
   
     const add = () => {
-          
+          seterror("");
+          if(val==0 || dish == ""){
+            seterror("Please pick your dish and set the number first!");
+            return;
+          }
+          let temlist: order[] = orderlist.map(item =>{
+               return item;
+          });
+          const newid = temlist.length;
+          let neworder: order = {
+            id: newid.toString(),
+            type: "order",
+            value: val, 
+            name: dish
+          }
+          temlist.push(neworder);
+          setorderlist(temlist);     
     }
-   
 
+
+    useEffect(()=>{
+       const tem:string[] = [];
+       disheslist.dishes.map(item => {
+            if(item.restaurant == resname){
+                for(var time of item.availableMeals){
+                    if(time == mealtype.toLowerCase()){
+                        tem.push(item.name);
+                    }
+                }
+            }
+       });
+       setfoodoptions(tem);
+       if(tem.length==0){
+        seterror("No dish provided based on selected resturant and time! ");
+       }
+    },[]);
+
+   
     return(
         <div>
              <div className = "block">
@@ -49,13 +90,9 @@ export const Step3 = () => {
                     value={dish}
                     onChange={changedish}
                  >
-                    <MenuItem value={"Mc Donalds"}>Mc Donalds</MenuItem>
-                    <MenuItem value={"Taco Bell"}>Taco Bell</MenuItem>
-                    <MenuItem value={"BBQ Hut"}>BBQ Hut</MenuItem>
-                    <MenuItem value={"Vege Deli"}>Vege Deli</MenuItem>
-                    <MenuItem value={"Pizzeria"}>Pizzeria</MenuItem>
-                    <MenuItem value={"Panda Express"}>Panda Express</MenuItem>
-                    <MenuItem value={"Olive Garden"}>Olive Garden</MenuItem>
+                {foodoptions.map(item => (
+                    <MenuItem value={item}>{item}</MenuItem>
+                ))}
                 </Select>
                 </FormControl>
                 <IconButton color="primary" aria-label="upload picture" component="label" onClick = {()=> add()}>

@@ -20,7 +20,16 @@ export const Step1 = () => {
         setpeoplenumber(Number(event.target.value));
     }
 
+    const peoplenum = [1,2,3,4,5,6,7,8,9,10];
+    const mealtypelist = ["Breakfast", "Lunch", "Dinner"];
 
+    const mealtypeItems = mealtypelist.map(item => (
+        <MenuItem value={item}>{item}</MenuItem>
+    ))
+
+    const peoplenumItems = peoplenum.map(item => (
+        <MenuItem value={item}>{item}</MenuItem>
+    ))
 
     return(
        <div>
@@ -33,10 +42,7 @@ export const Step1 = () => {
              value={mealtype}
              onChange={changemealtype}
              >
-           
-            <MenuItem value={"Breakfast"}>Breakfast</MenuItem>
-            <MenuItem value={"Lunch"}>Lunch</MenuItem>
-            <MenuItem value={"Dinner"}>Dinner</MenuItem>
+            {mealtypeItems}
             </Select>
            </FormControl>
 
@@ -50,19 +56,9 @@ export const Step1 = () => {
              value={peoplenumber.toString()}
              onChange={changepeoplenumber}
              >
-            <MenuItem value={1}>1</MenuItem>
-            <MenuItem value={2}>2</MenuItem>
-            <MenuItem value={3}>3</MenuItem>
-            <MenuItem value={4}>4</MenuItem>
-            <MenuItem value={5}>5</MenuItem>
-            <MenuItem value={6}>6</MenuItem>
-            <MenuItem value={7}>7</MenuItem>
-            <MenuItem value={8}>8</MenuItem>
-            <MenuItem value={9}>9</MenuItem>
-            <MenuItem value={10}>10</MenuItem>
+            {peoplenumItems}
             </Select>
            </FormControl>
-
 
        </div>
     );
