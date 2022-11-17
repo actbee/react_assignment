@@ -4,7 +4,8 @@
 }
 .data{
     overflow-y: scroll;
-    height: 30vh;
+    height: 40vh;
+    width: 35vw;
 }
 .left{
     min-width: 200px;

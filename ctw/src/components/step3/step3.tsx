@@ -6,10 +6,16 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
+import DeleteIcon from '@mui/icons-material/Delete';
 import IconButton from '@mui/material/IconButton';
 import {errormsg, meal_type, people_number, restaurant_name, orders, sumorders} from "../../store";
 import {order} from "../../type/order";
 import disheslist from "../../data/dishes.json";
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemAvatar from '@mui/material/ListItemAvatar';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemText from '@mui/material/ListItemText';
 
 
 export const Step3 = () => {
@@ -26,11 +32,16 @@ export const Step3 = () => {
 
     const changedish = (event: SelectChangeEvent) => {
           setdish(event.target.value);
+          setval(1);
       };
   
     const changeval = (event: SelectChangeEvent) => {
           setval(Number(event.target.value));
       }
+    
+    const changeorderval = (event: SelectChangeEvent) => {
+        
+    } 
   
     const add = () => {
           seterror("");
@@ -52,6 +63,22 @@ export const Step3 = () => {
           setorderlist(temlist);     
     }
 
+    const valnum = [1,2,3,4,5,6,7,8,9,10];
+    const valnumItems = valnum.map(item => (
+        <MenuItem value={item}>{item}</MenuItem>
+    ))
+
+    const minus = (target:string) => {
+        console.log("delete", target);
+       const tem: order[] = [];
+       orderlist.map(item => {
+            if(item.id == target ){
+                return;
+            }
+            tem.push(item);
+       });
+       setorderlist(tem);
+    }
 
     useEffect(()=>{
        const tem = new Set<string>();
@@ -106,27 +133,48 @@ export const Step3 = () => {
                 <div className = "right">
                 <FormControl sx={{ m: 1, minWidth: 50 }} size="small">
                 <Select
-                    labelId="select-people-number"
-                    id="select-people-number"
+                    labelId="select-dish-number"
+                    id="select-dish-number"
                     value={val.toString()}
                     onChange={changeval}
                  >
-                    <MenuItem value={1}>1</MenuItem>
-                    <MenuItem value={2}>2</MenuItem>
-                    <MenuItem value={3}>3</MenuItem>
-                    <MenuItem value={4}>4</MenuItem>
-                    <MenuItem value={5}>5</MenuItem>
-                    <MenuItem value={6}>6</MenuItem>
-                    <MenuItem value={7}>7</MenuItem>
-                    <MenuItem value={8}>8</MenuItem>
-                    <MenuItem value={9}>9</MenuItem>
-                    <MenuItem value={10}>10</MenuItem>
+                {valnumItems}
                 </Select>
                 </FormControl>
                 </div>
             </div>
             <div className = "data">
-                 
+                <List>
+                  {orderlist.map((ordervalue) =>{
+                      if(Number(ordervalue.id)==0){
+                        return;
+                      }
+                      return(
+                             <ListItem
+                             secondaryAction={
+                               <IconButton edge="end" aria-label="delete" onClick = {()=> minus(ordervalue.id)}>
+                                 <DeleteIcon />
+                               </IconButton>
+                             }
+                           >
+                             <ListItemText
+                               primary={ordervalue.name}
+                             />
+                               <FormControl sx={{ m: 1, minWidth: 50 }} size="small">
+                                <Select
+                                    labelId={"pick"+ordervalue.name}
+                                    id={"pick"+ordervalue.name}
+                                    value={ordervalue.value.toString()}
+                                    onChange={changeorderval}
+                                 >
+                                {valnumItems}
+                                </Select>
+                                </FormControl>
+                           </ListItem>
+                        );
+                      }
+                   )}
+                </List>
             </div>
         </div>
     );
