@@ -28,6 +28,7 @@ const Main = () => {
 
     const changestep = (num:number) =>{
         setstep(num);
+        seterror("");
     }
 
     const finished = (curstep:number) =>{

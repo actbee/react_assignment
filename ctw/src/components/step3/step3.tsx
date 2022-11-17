@@ -54,18 +54,22 @@ export const Step3 = () => {
 
 
     useEffect(()=>{
-       const tem:string[] = [];
+       const tem = new Set<string>();
        disheslist.dishes.map(item => {
             if(item.restaurant == resname){
                 for(var time of item.availableMeals){
                     if(time == mealtype.toLowerCase()){
-                        tem.push(item.name);
+                        tem.add(item.name);
                     }
                 }
             }
        });
-       setfoodoptions(tem);
-       if(tem.length==0){
+       const arr: string[] = [];
+       for(var i of tem){
+        arr.push(i);
+       }
+       setfoodoptions(arr);
+       if(arr.length==0){
         seterror("No dish provided based on selected resturant and time! ");
        }
     },[]);
