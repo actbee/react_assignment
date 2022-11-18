@@ -20,8 +20,22 @@
 }
 .table{
     border: 1px solid black;
+
 }
-.listitemcontainer{
+.listitemcontainer {
     display: flex;
+    flex-direction: row;
     justify-content: space-between;
+    flex-wrap: nowrap;
+    width: 15vw;
+    padding-left: 1vw;
+    padding-right: 2vw;
+}
+.listitem{
+    align-self: center;
+    width: 50%;
+}
+.toright{
+    text-align: end;
+    /* align-text: right; */
 }

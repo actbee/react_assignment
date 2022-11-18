@@ -43,14 +43,12 @@ export const Review = () => {
                       if(Number(ordervalue.id)==0){
                         return;
                       }
-                      return(
-                            <div className="listitemcontainer">
-                             <ListItem>
-                             <ListItemText
-                               primary={ordervalue.name}/> 
-                            <ListItemText
-                               primary={"--------"+ordervalue.value}/>   
-                            </ListItem>
+                      return(     
+                             <div className="listitemcontainer">
+                                <ListItemText className="listitem"
+                                primary={ordervalue.name}/> 
+                                <ListItemText className="listitem toright"
+                                primary={ordervalue.value}/>   
                             </div>
                         );
                       }
