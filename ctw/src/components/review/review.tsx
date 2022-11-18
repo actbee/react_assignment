@@ -44,12 +44,14 @@ export const Review = () => {
                         return;
                       }
                       return(
+                            <div className="listitemcontainer">
                              <ListItem>
                              <ListItemText
                                primary={ordervalue.name}/> 
                             <ListItemText
                                primary={"--------"+ordervalue.value}/>   
                             </ListItem>
+                            </div>
                         );
                       }
                    )}

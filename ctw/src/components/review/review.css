@@ -21,3 +21,7 @@
 .table{
     border: 1px solid black;
 }
+.listitemcontainer{
+    display: flex;
+    justify-content: space-between;
+}

@@ -1,19 +1,25 @@
-import "./step1.css";
+
 import React from "react";
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import {useState, useRef} from "react";
-import {meal_type, people_number} from "../../store"
+import {meal_type, people_number, orders} from "../../store"
 import { useRecoilState } from "recoil";
+import {order} from "../../type/order";
 
 
 export const Step1 = () => {
     const [mealtype, setmealtype] = useRecoilState(meal_type);
     const [peoplenumber, setpeoplenumber] = useRecoilState(people_number);
+    const [orderlist, setorderlist] = useRecoilState(orders);
 
     const changemealtype = (event: SelectChangeEvent) => {
       setmealtype(event.target.value);
+      const tem:order[] = [];
+      tem.push(orderlist[0]);
+      setorderlist(tem);
+      console.log("test", tem);
     };
 
     const changepeoplenumber = (event: SelectChangeEvent) => {

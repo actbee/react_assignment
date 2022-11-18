@@ -7,8 +7,8 @@ import { StylesContext } from "@material-ui/styles";
 import { Step1 } from "../step1/step1";
 import { Step2 } from "../step2/step2";
 import { Step3 } from "../step3/step3";
-import {Review} from "../step4/review";
-import { errormsg, restaurant_name, restaurant_list, meal_type, people_number } from "../../store";
+import {Review} from "../review/review";
+import { errormsg, restaurant_name, restaurant_list, meal_type, people_number, sum_orders } from "../../store";
 import { useRecoilValue, useRecoilState } from "recoil";
 import { finished } from "stream";
 import disheslist from "../../data/dishes.json";
@@ -19,6 +19,8 @@ const Main = () => {
     const restaurant = useRecoilValue(restaurant_name);
     const mealtype = useRecoilValue(meal_type);
     const peoplenumber = useRecoilValue(people_number);
+    const sumorders = useRecoilValue(sum_orders);
+
     const [reslist, setreslist] = useRecoilState(restaurant_list);
     const [error, seterror] = useRecoilState(errormsg);
 
@@ -49,7 +51,15 @@ const Main = () => {
             }
         }
         else if(curstep==3){
-            return true;
+            if(peoplenumber<=sumorders && sumorders<=10){
+                return true;
+            }
+            if(sumorders>10){
+                seterror("Total number of dishes can't be greater than 10!");
+            }
+            else if(sumorders<peoplenumber){
+                seterror("Total number of dishes can't be less than the number of people ("+peoplenumber.toString()+") !");
+            }
         }
         return false;
     }
@@ -67,6 +77,10 @@ const Main = () => {
     const goprevious = () =>{
        seterror("");
        setstep(step-1);
+    }
+
+    const submit = () =>{
+        window.alert("Submitted!");
     }
 
     useEffect(()=>{
@@ -135,7 +149,7 @@ const Main = () => {
                     }: {
                         backgroundColor: "white"
                     }}
-                    disabled = {moststep<4}
+                    disabled
                 >
                     Review
                 </Button>
@@ -190,6 +204,7 @@ const Main = () => {
                     <Button 
                        style = {{width: '100px', height: '40px', background: "#4B98E5"}} 
                        variant="contained"
+                       onClick = {()=>submit()}
                     >
                        Submit
                     </Button>

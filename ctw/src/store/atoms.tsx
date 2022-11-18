@@ -28,6 +28,11 @@ export const restaurant_list = atom<string[]>({
     default: [],
 })
 
+export const food_options = atom<string[]>({
+    key:"foodoptions",
+    default: [],
+})
+
 export const orders = atom<order[]>({
     key: "orders",
     default: [{
@@ -38,7 +43,7 @@ export const orders = atom<order[]>({
     }]
 })
 
-export const sumorders = selector({
+export const sum_orders = selector({
     key: "sumorders",
     get: ({get}) => {
         const os = get(orders);

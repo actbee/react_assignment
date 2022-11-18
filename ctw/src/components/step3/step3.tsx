@@ -8,14 +8,13 @@ import Select, { SelectChangeEvent } from '@mui/material/Select';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import DeleteIcon from '@mui/icons-material/Delete';
 import IconButton from '@mui/material/IconButton';
-import {errormsg, meal_type, people_number, restaurant_name, orders, sumorders} from "../../store";
+import {errormsg, meal_type, people_number, restaurant_name, orders,food_options} from "../../store";
 import {order} from "../../type/order";
 import disheslist from "../../data/dishes.json";
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
-import ListItemAvatar from '@mui/material/ListItemAvatar';
-import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
+import { isTemplateExpression } from "typescript";
 
 
 export const Step3 = () => {
@@ -24,11 +23,14 @@ export const Step3 = () => {
     const peoplenum = useRecoilValue(people_number);
     const resname = useRecoilValue(restaurant_name);
 
-    const [dish, setdish] = useState("");
-    const [val, setval] = useState(0);
+    const [foodoptions, setfoodoptions] = useRecoilState(food_options);
     const [orderlist, setorderlist] = useRecoilState(orders);
     const [error, seterror] = useRecoilState(errormsg);
-    const [foodoptions, setfoodoptions] = useState([""]);
+
+    const [dish, setdish] = useState("");
+    const [val, setval] = useState(0);
+
+
 
     const changedish = (event: SelectChangeEvent) => {
           setdish(event.target.value);
@@ -39,8 +41,24 @@ export const Step3 = () => {
           setval(Number(event.target.value));
       }
     
-    const changeorderval = (event: SelectChangeEvent) => {
-        
+    const changeorderval = (event: SelectChangeEvent, targetid: string) => {
+          const tem: order[] = [];
+          orderlist.map(item => {
+            if(item.id == targetid ){
+                console.log("do");
+                let neworder: order = {
+                    id: item.id,
+                    type: item.type,
+                    value: Number(event.target.value), 
+                    name: item.name
+                  }
+                tem.push(neworder);
+                return;
+            }
+            tem.push(item);
+          });
+       setorderlist(tem);
+       console.log(tem);
     } 
   
     const add = () => {
@@ -60,7 +78,16 @@ export const Step3 = () => {
             name: dish
           }
           temlist.push(neworder);
-          setorderlist(temlist);     
+          setorderlist(temlist);
+          const temarr: string[] = []; 
+          foodoptions.map(item => {
+            if(item != dish){
+                temarr.push(item);
+            }
+          }); 
+          setfoodoptions(temarr);
+          setdish("");
+          setval(0);
     }
 
     const valnum = [1,2,3,4,5,6,7,8,9,10];
@@ -69,18 +96,25 @@ export const Step3 = () => {
     ))
 
     const minus = (target:string) => {
-        console.log("delete", target);
        const tem: order[] = [];
+       let temarr: string[] = foodoptions.map(item => {
+          return item;
+       });
        orderlist.map(item => {
             if(item.id == target ){
+                temarr.push(item.name);
                 return;
             }
             tem.push(item);
        });
        setorderlist(tem);
+       setfoodoptions(temarr);
     }
 
     useEffect(()=>{
+       if(orderlist.length>1){
+         return;
+       } 
        const tem = new Set<string>();
        disheslist.dishes.map(item => {
             if(item.restaurant == resname){
@@ -163,9 +197,9 @@ export const Step3 = () => {
                                <FormControl sx={{ m: 1, minWidth: 50 }} size="small">
                                 <Select
                                     labelId={"pick"+ordervalue.name}
-                                    id={"pick"+ordervalue.name}
+                                    id={ordervalue.id}
                                     value={ordervalue.value.toString()}
-                                    onChange={changeorderval}
+                                    onChange={event => changeorderval(event, ordervalue.id)}
                                  >
                                 {valnumItems}
                                 </Select>
